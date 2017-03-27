@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.team4.project.government.dto.GoDoctor;
+import com.team4.project.government.dto.GoHospital;
 
 public class Interceptor extends HandlerInterceptorAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(Interceptor.class);
@@ -28,17 +29,20 @@ public class Interceptor extends HandlerInterceptorAdapter {
 		// 정부 인터셉터
 		logger.debug("정부 인터셉터 들어옴");
 		String doctorId = request.getParameter("doctorId");
+		String hospitalId = request.getParameter("hospitalId");
 		logger.debug("doctorId:"+doctorId);
 		GoDoctor goDoctor = sql.selectOne("government.doctorIdCheck", doctorId);
-		if (goDoctor==null) {
-			logger.debug("code없음 ");
-			response.setContentType("text/html;charset=utf-8");
-			PrintWriter out = response.getWriter();
-			out.write("권한이없습니다.");
-			return false;
-		}
 		logger.debug("goDoctor:"+goDoctor);
-		logger.debug("code있음 ");
-		return true;
+		GoHospital goHospital = sql.selectOne("government.hospitalIdCheck", hospitalId);
+		if (goDoctor!=null || goHospital!=null) {
+			logger.debug("code있음");
+			return true;
+		}
+		logger.debug("code없음 ");
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.write("권한이없습니다.");
+
+		return false;
 	}
 }

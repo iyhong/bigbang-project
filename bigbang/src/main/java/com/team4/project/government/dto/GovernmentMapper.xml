@@ -26,11 +26,18 @@
 			go_citizen.GO_CITIZEN_ID=#{citizenId}
 	</select>
 	
+	<select id="hospitalIdCheck" parameterType="String" resultType="com.team4.project.government.dto.GoHospital">
+		SELECT
+			GO_HOSPITAL_ID
+		FROM go_hospital
+		WHERE GO_HOSPITAL_ID = #{doctorId}
+	</select>
+	
 	<select id="doctorIdCheck" parameterType="String" resultType="com.team4.project.government.dto.GoDoctor">
 		SELECT
 			go_doctor_id
 		FROM go_doctor
-		WHERE go_doctor_id = #{doctorId}
+		WHERE go_doctor_id = #{hospitalId}
 	</select>
 	
 	<!-- 국민로그인 체크 -->
